@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from './dto/login.dto';
 import { ApiResponse } from '@nestjs/swagger';
@@ -12,14 +12,19 @@ export class AuthController {
   @Post('login')
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  @UseGuards(AuthGuard('local'))
-  login(@Body() body:LoginDto) {
-    return { message: 'Login successful', body};
+  async login(@Body() body:LoginDto) {
+    return this.authService.loginFlow(body);
   }
 
   @Post('logout')
   logout(@Request() req) {
     req.logout(() => {});
     return { message: 'Logged out' };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }

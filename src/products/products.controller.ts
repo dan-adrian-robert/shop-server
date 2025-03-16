@@ -17,31 +17,37 @@ export class ProductsController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create product' })
   create(@Body() createProductDto: ProductDto) {
     return this.productService.create(createProductDto);
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get product by id' })
   findOne(@Param('id') id: string) {
     return this.productService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Edit product' })
   update(@Param('id') id: string, @Body() updateProductDto: ProductDto) {
     return this.productService.update(+id, updateProductDto);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete by id' })
   remove(@Param('id') id: string) {
     return this.productService.remove(+id);
   }
 
   @Delete()
+  @ApiOperation({ summary: 'Delete all' })
   clearAll() {
     return this.productService.clearAll();
   }
 
   @Post('bulk')
+  @ApiOperation({ summary: 'Bulk create products' })
   @ApiBody(BULK_CREATE_PRODUCTS)
   createBulk(@Body() productList: {products: Array<ProductDto>}) {
     return this.productService.createBulk(productList.products);

@@ -3,6 +3,8 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { ProductsService } from './products.service';
 import { ProductDto } from "./dto/product.dto"
 import { BULK_CREATE_PRODUCTS } from "./swagger/bulk.create.swagger"
+import { CHECKOUT_BODY } from "./swagger/checkout.swagger"
+import { CheckoutDto } from "./dto/checkout.dto"
 
 @ApiTags('products')
 @Controller('products')
@@ -51,5 +53,12 @@ export class ProductsController {
   @ApiBody(BULK_CREATE_PRODUCTS)
   createBulk(@Body() productList: {products: Array<ProductDto>}) {
     return this.productService.createBulk(productList.products);
+  }
+
+  @Post('checkout')
+  @ApiOperation({ summary: 'checkout' })
+  @ApiBody(CHECKOUT_BODY)
+  validateProducts(@Body() body: CheckoutDto) {
+    return this.productService.checkout(body);
   }
 }

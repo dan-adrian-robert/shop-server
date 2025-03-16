@@ -2,17 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserEntity } from '../../entities/user.entity';
+import { ProductEntity } from '../../entities/product.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, ProductEntity]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        console.log('test', configService.get<string>('DB_HOST'));
-
         return {
           type: 'postgres',
           host: configService.get<string>('DB_HOST'),
@@ -22,7 +21,7 @@ import { UserEntity } from '../../entities/user.entity';
           database: configService.get<string>('DB_NAME'),
           autoLoadEntities: true, // Automatically loads entities
           synchronize: true,
-          entities: [UserEntity]
+          entities: [UserEntity, ProductEntity]
         }
       },
     }),

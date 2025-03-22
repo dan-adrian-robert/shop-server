@@ -6,7 +6,7 @@ import { BULK_CREATE_PRODUCTS } from "./swagger/bulk.create.swagger"
 import { CHECKOUT_BODY } from "./swagger/checkout.swagger"
 import { CheckoutDto } from "./dto/checkout.dto"
 
-@ApiTags('products')
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}

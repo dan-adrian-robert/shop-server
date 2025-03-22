@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { PaymentModule } from "./payment/payment.module"
+import { FileUploadModule } from "./file-upload/file-upload.module"
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { PaymentModule } from "./payment/payment.module"
     ProductsModule,
     DatabaseModule,
     UsersModule,
-    PaymentModule
+    PaymentModule,
+    FileUploadModule,
   ],
   controllers: [],
   providers: [AuthService],

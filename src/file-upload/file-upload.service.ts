@@ -49,4 +49,29 @@ export class FileUploadService {
       throw new InternalServerErrorException('Failed to upload to MinIO');
     }
   }
+
+  async getAssetUrl(filename: string): Promise<any> {
+    return this.minioClient.presignedGetObject(this.bucketName, filename, 24 * 60 * 60);
+  }
+
+  async getBulkAssets(body: Array<string>):Promise<Record<string, string> | any> {
+    const assetMap = {};
+    const promiseList: Array<Promise<any>> = [];
+
+    body.forEach((filename) => {
+      promiseList.push(this.getAssetUrl(filename))
+    })
+
+    const result:Array<string> = await Promise.all(promiseList);
+
+    body.forEach((filename) => {
+      result.forEach((fileUrl) => {
+        if(fileUrl.includes(filename)){
+          assetMap[filename] = fileUrl;
+        }
+      })
+    })
+
+    return assetMap
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common"
+import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common"
 import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger"
 
 import { FileInterceptor } from "@nestjs/platform-express"
@@ -26,5 +26,16 @@ export class FileUploadController {
   })
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
     return this.uploadService.uploadImage(file);
+  }
+
+  @Get(':filename')
+  async getPresignedUrl(@Param('filename') filename: string) {
+    const url = await this.uploadService.getAssetUrl(filename);
+    return { url };
+  }
+
+  @Post('/bulk')
+  async getBulkAssets(@Body() body: Array<string>) {
+    return await this.uploadService.getBulkAssets(body);
   }
 }
